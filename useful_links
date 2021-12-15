@@ -1,7 +1,13 @@
+GENERAL Quickdraw github:
+https://github.com/googlecreativelab/quickdraw-dataset
+
+
 
 Python snippets for QuickDraw:
 https://github.com/martinohanlon/quickdraw_python
 
-
 API for QuickDraw:
 https://quickdraw.readthedocs.io/en/latest/api.html#quickdrawing
+
+Quickdraw: converting data, building classifier and model: 
+https://github.com/tensorflow/docs/blob/master/site/en/r1/tutorials/sequences/recurrent_quickdraw.md
