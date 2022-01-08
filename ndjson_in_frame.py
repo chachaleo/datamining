@@ -4,6 +4,9 @@ import ndjson
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
+# Download ndjson-datasets: apple, donut, eye
+# https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/simplified?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&prefix=&forceOnObjectsSortingFiltering=false
+
 #Dataload
 path = "full_simplified_apple.ndjson"
 records = map(json.loads, open((path),  encoding="utf-8", newline="\n" ))
