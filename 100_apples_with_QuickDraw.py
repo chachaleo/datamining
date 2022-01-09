@@ -32,6 +32,15 @@ for apple in apples.drawings:
 
 print(data_array_array)   	
 
+#Printing an apple :
+for i in range(255):
+    for j in range(255):
+    	if(data_array_array[8][i,j]==1 ):
+    		plt.plot(i,j)
+
+plt.show()
+
+
 '''with open('data.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(["word", "drawing"])
