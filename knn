@@ -1,0 +1,60 @@
+#!pip install tensorflow
+
+import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+from sklearn.neighbors import KNeighborsClassifier
+import ujson as json
+from sklearn.model_selection import train_test_split
+
+
+path = "full_simplified_apple.ndjson"
+records = map(json.loads, open((path),  encoding="utf-8", newline="\n" ))
+data = pd.DataFrame.from_records(records, nrows=3, columns=['word', 'drawing'])
+
+path = "full_simplified_donut.ndjson"
+records = map(json.loads, open((path),  encoding="utf-8", newline="\n" ))
+data2 = pd.DataFrame.from_records(records, nrows=3, columns=['word', 'drawing'])
+
+result = data.append(data2, ignore_index=True)
+
+path = "full_simplified_eye.ndjson"
+records = map(json.loads, open((path),  encoding="utf-8", newline="\n" ))
+data3 = pd.DataFrame.from_records(records, nrows=3, columns=['word', 'drawing'])
+
+df = result.append(data3, ignore_index=True)
+
+
+a = []
+b = []
+for stroke in df['drawing']:
+    for x, y in stroke:
+        
+        a.append(x)
+        b.append(y)
+     
+t = np.concatenate((a,b), dtype=object)
+print(t) 
+    
+X = df.drop(columns=['word'])
+y = df['word'].values
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1, stratify=y)
+
+#print(isinstance(y_train, np.ndarray))
+#print(isinstance(X_train, np.ndarray))
+
+# create the model
+knn = KNeighborsClassifier(n_neighbors = 3)
+
+
+# fit the model
+#knn.fit(X_train,y_train)
+
+#show first 5 model predictions on the test data
+#knn.predict(X_test)[0:5]
+
+#check accuracy of our model on the test data
+#knn.score(X_test, y_test)
