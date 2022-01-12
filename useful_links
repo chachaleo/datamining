@@ -6,6 +6,10 @@ Knn
 https://towardsdatascience.com/building-a-k-nearest-neighbors-k-nn-model-with-scikit-learn-51209555453a
 Knn mnist
 https://customers.pyimagesearch.com/lesson-sample-k-nearest-neighbor-classification/
+Knn sklean source code :
+https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/neighbors/_classification.py
+knn + tsne representation :
+https://link.springer.com/chapter/10.1007/978-3-030-70296-0_69
 
 
 
