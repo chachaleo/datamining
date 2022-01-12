@@ -1,0 +1,44 @@
+from sklearn import svm
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+import seaborn as sns
+import pandas as pd
+from sklearn.metrics import confusion_matrix
+
+model = svm.SVC(kernel='linear')
+
+model.fit(trainData,trainLabels)
+
+y_pred=model.predict(testData)
+print("The predicted Data is :")
+print(y_pred)
+print("The actual data is:")
+print(np.array(testLabels))
+print(f"The model is {accuracy_score(y_pred,testLabels)*100}% accurate")
+
+print("EVALUATION ON TESTING DATA")
+print(classification_report(testLabels, y_pred))
+
+
+y_pred=model.predict(testData)
+y_true = np.array(testLabels)
+
+cm = confusion_matrix(y_true, y_pred)
+cmdf = pd.DataFrame(cm, index=range(3), columns=range(3))
+
+
+
+
+ax = sns.heatmap(cmdf, annot=True, cmap="Blues", fmt="g")
+ax.set(ylabel="Actual", xlabel="Predicted")
+
+
+#--------------------
+#Cross Validation
+cv_scores = cross_val_score(model, trainData, trainLabels, cv=5)
+
+#print each cv score (accuracy) and average them
+print(cv_scores)
+print("cv_scores mean:{}".format(np.mean(cv_scores)))
