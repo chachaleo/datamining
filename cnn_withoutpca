@@ -1,0 +1,134 @@
+nombre = 50
+target = []
+
+apples = QuickDrawDataGroup("apple", max_drawings=nombre)
+
+donut = QuickDrawDataGroup("donut", max_drawings=nombre)
+
+eye = QuickDrawDataGroup("fork", max_drawings=nombre)
+
+data_array_array = []
+m = []
+maxi=0
+
+
+for apple in apples.drawings:
+#    target.append(apple.name)
+    target.append(1)
+
+    maxi = maxi +1
+    data_array = np.zeros((255*255))
+    m = np.zeros((255,255))
+    #plt.imshow(apple.image)
+    data = np.asarray(apple.image)
+    for i in range(255):
+    	for j in range(255):
+    		if(data[i][j][0]==0 and data[i][j][1]==data[i][j][0] and data[i][j][2]==data[i][j][0]):
+    			data_array[i*255 + j] = 1
+
+    data_array_array.append(data_array)
+    if(maxi==nombre):
+    	break
+
+
+maxi_donut=0
+print("1")
+
+for donut in donut.drawings:
+    #target.append(donut.name)
+    target.append(2)
+
+    maxi_donut = maxi_donut +1
+    data_array_donut = np.zeros((255*255))
+
+    #plt.imshow(donut.image)
+    data_donut = np.asarray(donut.image)
+    for i in range(255):
+    	for j in range(255):
+    		if(data_donut[i][j][0]==0 and data_donut[i][j][1]==data_donut[i][j][0] and data_donut[i][j][2]==data_donut[i][j][0]):
+    			data_array_donut[i*255 + j] = 1
+
+    data_array_array.append(data_array_donut)
+    if(maxi_donut==nombre):
+    	break
+
+
+maxi_eye=0
+print("2")
+
+for eye in eye.drawings:
+    #target.append(eye.name)
+    target.append(3)
+
+    maxi_eye = maxi_eye +1
+    data_array_eye = np.zeros((255*255))
+
+
+    #plt.imshow(eye.image)
+    data_eye = np.asarray(eye.image)
+    for i in range(255):
+    	for j in range(255):
+    		if(data_eye[i][j][0]==0 and data_eye[i][j][1]==0 and data_eye[i][j][2]==0):
+    			data_array_eye[i*255 + j] = 1
+
+    data_array_array.append(data_array_eye)
+    if(maxi_eye==nombre):
+    	break 
+
+print("3")
+
+
+# training data 70%, test data 30%
+(trainData, testData, trainLabels, testLabels) = train_test_split(data_array_array,
+	target, test_size=0.3, random_state=42)
+
+
+# validation data: 10% of training data 
+(trainData, valData, trainLabels, valLabels) = train_test_split(trainData, trainLabels,
+	test_size=0.1, random_state=42)
+
+
+
+# size of each data split
+print("training data points: {}".format(len(trainLabels)))
+print("validation data points: {}".format(len(valLabels)))
+print("testing data points: {}".format(len(testLabels)))
+
+
+print("--------------------------------")
+print("Method: Convolutional neuronal network")
+print("--------------------------------")
+
+
+X_train = np.array(trainData) 
+X_test = np.array(testData)
+y_train = np.array(trainLabels)
+y_test = np.array(testLabels)
+
+X_train = np.array(X_train).reshape(np.array(X_train).shape[0], 255, 255, 1).astype('float32')
+X_test = np.array(X_test).reshape(np.array(X_test).shape[0], 255, 255, 1).astype('float32')
+
+num_pixels = 255*255
+num_classes = 1
+
+# GOOD GOOD
+def baseline_model():
+    model = Sequential()
+    model.add(Conv2D(32, (5, 5), input_shape=(255, 255, 1), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.2))
+    model.add(Flatten())
+    model.add(Dense(128, activation='relu'))
+    model.add(Dense(num_classes, activation='softmax'))
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    return model
+
+# build the model
+model = baseline_model()
+
+model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=200, verbose=2)
+
+# Final evaluation of the model
+scores = model.evaluate(X_test, y_test, verbose=0)
+print(scores)
+print("Baseline Error: %.2f%%" % (100-scores[1]*100))
